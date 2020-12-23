@@ -1,4 +1,4 @@
-{% extends 'todo_core/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
     Tasks
@@ -27,7 +27,14 @@
     </div>
 
 
-    <div class="row justify-content-center  mt-5">
+     <div class="row justify-content-center  mt-5">
+        {% if form.task_name.errors %}
+            {{form.task_name.errors}}
+        {% endif %}
+     </div>
+
+
+    <div class="row justify-content-center  mt-4">
         <div class="col-8 mt-5">
             {% for task in tasks%}
                 <div class= "card mb-1">
