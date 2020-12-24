@@ -8,7 +8,8 @@
 
     <div class="row justify-content-center">
         <div class="col-8 mt-5">
-            <form action="." method="POST" class="form-inline justify-content-center">
+            <form action="." method="POST" id= "createTaskForm" 
+            class="form-inline justify-content-center" data-url="task_list_url">
                 {% csrf_token %}
                 {% for field in form%}
                     <div class="mx-3">
@@ -16,7 +17,7 @@
                     </div>
                 {% endfor %}
 
-                    <button type="submit" class="btn btn-success  col-4 mx-3 mt-3" style="float:right;">
+                    <button type="button" id="createTaskButton" class="btn btn-success  col-4 mx-3 mt-3" style="float:right;">
                         Create
                     </button>
         
@@ -35,10 +36,10 @@
 
 
     <div class="row justify-content-center  mt-4">
-        <div class="col-8 mt-5">
+        <div class="col-8 mt-5" id="task-list">
             {% for task in tasks%}
                 <div class= "card mb-1">
-                    <div class="card-body">
+                    <div class="card-body" id="taskCard">
                         {{task.task_name}}
                     
                     <button type="button" class="close" style="float:right;">
