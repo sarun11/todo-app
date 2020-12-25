@@ -3,7 +3,9 @@ function dateFunc() {
     d = d.toLocaleDateString('en-US');
     $("#date").html(d);
 }; 
-
+$(document).on("keydown", "form", function(event) { 
+    return event.key != "Enter";
+});
 
  $(document).ready(function(){
     //  calling the date function to insert date at the top
@@ -24,8 +26,8 @@ function dateFunc() {
             data: serialisedData,
             method: 'post',
             success: function(response){
-               $('#task-list').append("<div class= 'card mb-1'><div class='card-body' id='taskCard' data-id='" + response.task.id + "'>" +response.task.task_name +
-                "<button type='button' class='close' style='float:right;'><span aria-label='true'>&times;</span></button></div></div>") 
+               $('#task-list').append("<div class= 'card mb-1' id='task' data-id='" + response.task.id + "'><div class='card-body' id='taskCard' data-id='"+ response.task.id + "'>" +response.task.task_name +
+                "<button type='button' class='close' data-id='"+ response.task.id + "' style=float:right;'><span aria-label='true'>&times;</span></button></div></div>") 
             }
         })
 
@@ -38,12 +40,8 @@ function dateFunc() {
         // var dataID = $(this).data("id");
         var dataID = $(this).attr("data-id");
 
-        // alert(dataID);
-        // console.log(dataID);
-        // console.log("clicked");
-
         $.ajax({
-            url : '/task/'+ dataID + '/completed/',
+            url : '/tasks/'+ dataID + '/completed/',
             data : {
                 csrfmiddlewaretoken : csrfToken,
                 id: dataID,
@@ -52,8 +50,27 @@ function dateFunc() {
             success: function(){
                 var cardItem = $('#taskCard[data-id="' + dataID + '"]');
                 cardItem.css('text-decoration', 'line-through').hide().slideDown();
-
+                $('#task[data-id="' + dataID + '"]').hide();
                 $("#task-list").append(cardItem);
+            }
+        });
+      }).on('click', 'button.close', function(event){
+        // alert('X clicked');
+        event.stopPropagation();
+
+        var dataID = $(this).attr("data-id");
+        // alert(dataID);
+
+        $.ajax({
+            url: 'tasks/' + dataID + '/delete/', 
+            data:  {
+                csrfmiddlewaretoken : csrfToken,
+                id: dataID,
+            },
+            type: 'post',
+            dataType: 'json',
+            success: function() {
+                $('#taskCard[data-id="' + dataID + '"]').remove();
             }
         });
       });

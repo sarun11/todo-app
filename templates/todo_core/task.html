@@ -38,12 +38,12 @@
     <div class="row justify-content-center  mt-4">
         <div class="col-8 mt-5" id="task-list">
             {% for task in tasks%}
-                <div class= "card mb-1">
+                <div class= "card mb-1" id= "task" data-id="{{task.id}}">
                     <div class="card-body" id="taskCard" data-id="{{task.id}}"
                     style="{% if task.completed %} text-decoration: line-through {% endif %}">
                         {{task.task_name}}
                     
-                    <button type="button" class="close" style="float:right;">
+                    <button type="button" class="close" data-id="{{task.id}}" style="float:right;">
                         <span aria-label="true">&times;</span>
                     </button>
 
